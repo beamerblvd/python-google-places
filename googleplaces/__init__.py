@@ -157,8 +157,9 @@ def _get_place_photo(photoreference, api_key, maxheight=None, maxwidth=None,
 
 def _validate_response(url, response):
     """Validates that the response from Google was successful."""
-    if response['status'] not in [GooglePlaces.RESPONSE_STATUS_OK,
-                                  GooglePlaces.RESPONSE_STATUS_ZERO_RESULTS]:
+    if response['status'] not in (GooglePlaces.RESPONSE_STATUS_OK,
+                                  GooglePlaces.RESPONSE_STATUS_ZERO_RESULTS,
+                                  GooglePlaces.RESPONSE_STATUS_NOT_FOUND):
         error_detail = ('Request to URL %s failed with response code: %s' %
                         (url, response['status']))
         raise GooglePlacesError(error_detail)
@@ -205,6 +206,7 @@ class GooglePlaces(object):
     MAXIMUM_SEARCH_RADIUS = 50000
     RESPONSE_STATUS_OK = 'OK'
     RESPONSE_STATUS_ZERO_RESULTS = 'ZERO_RESULTS'
+    RESPONSE_STATUS_NOT_FOUND = 'NOT_FOUND'
 
     def __init__(self, api_key):
         self._api_key = api_key
