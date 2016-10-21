@@ -161,11 +161,18 @@ def _validate_response(url, response):
                                   GooglePlaces.RESPONSE_STATUS_ZERO_RESULTS]:
         error_detail = ('Request to URL %s failed with response code: %s' %
                         (url, response['status']))
-        raise GooglePlacesError(error_detail)
+        raise GooglePlacesAPIError(url, response['status'], error_detail)
 
 
 class GooglePlacesError(Exception):
     pass
+
+
+class GooglePlacesAPIError(GooglePlacesError):
+    def __init__(self, url, status_code, *args):
+        super(GooglePlacesAPIError, self).__init__(*args)
+        self.url = url
+        self.status_code = status_code
 
 
 class GooglePlacesAttributeError(AttributeError):
